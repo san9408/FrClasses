@@ -26,7 +26,7 @@ def log_in(user):
     return token
 
 def get_classes(token, url):
-    class_url = url_get_class
+    class_url = url
     get_class = requests.get(class_url, headers={'Authorization': 'Bearer ' + token})
     response_class = json.loads(get_class.text)
     return response_class
