@@ -49,7 +49,6 @@ try:
     type = 'all'
     a = submitted(user, type)
     df = pd.DataFrame(a)
-    st.write(df)
     my_df = df[["id", "start_date", "end_date", "teacher_name",]]
     my_df["selected"] = False
     st.write(f"Clases de frances disponibles a {date_beauty}")
