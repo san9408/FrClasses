@@ -36,6 +36,7 @@ def submitted(user, type):
     if type=='all':
         get_my_classes = get_classes(my_token, url_get_class)
     else:
+        print("registered")
         get_my_classes = get_classes(my_token, url_get_registered_class)
     return get_my_classes
 
@@ -48,6 +49,7 @@ try:
     type = 'all'
     a = submitted(user, type)
     df = pd.DataFrame(a)
+    st.write(df)
     my_df = df[["id", "start_date", "end_date", "teacher_name",]]
     my_df["selected"] = False
     st.write(f"Clases de frances disponibles a {date_beauty}")
@@ -66,23 +68,23 @@ try:
         hide_index=True,
         )  
 except:
-    st.write("No classes to show")
+    st.write("No hay clases para registrar")
 
 try:
     type = 'registered'
     a = submitted(user, type)
-    df = pd.DataFrame(a)
-    my_df = df[["id", "start_date", "end_date", "teacher_name",]]
+    my_df = df[["id", "start_date", "location_name", "teacher_name",]]
     st.write(f"Clases de frances registradas a {date_beauty}")
     st.data_editor(
         my_df, 
         column_config={
             "start_date": st.column_config.DateColumn("Fecha de inicio", format="ddd, DD MMM YYYY HH:MM"),
-            "end_date": st.column_config.DateColumn("Fecha de final", format="ddd, DD MMM YYYY HH:MM"),
+            #"end_date": st.column_config.DateColumn("Fecha de final", format="ddd, DD MMM YYYY HH:MM"),
+            "location_name": "Zoom ID",
             "teacher_name": "Profesor",
             },
         disabled=["id", "start_date", "end_date", "teacher_name"],
         hide_index=True,
         )  
 except:
-    st.write("No programed classes to show")
+    st.write("No hay clases programadas para mostrar")
