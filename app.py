@@ -9,10 +9,12 @@ time_zone = pytz.timezone("Europe/Paris") #America/Bogota
 date_time_zone = datetime.datetime.now(time_zone)
 date_formated = f'{date_time_zone.strftime('%Y-%m-%dT%H:%M:%S')}'
 date_beauty = f'{date_time_zone.strftime('%a, %d %b %Y %H:%M')}'
+class_id = ""
 
 url_get_token = 'https://back-spc.azurewebsites.net/api/v1/auth/login'
 url_get_class = f'https://back-spc.azurewebsites.net/api/v1/class?start_date={date_formated}&type=REGULAR'
 url_get_registered_class = f'https://back-spc.azurewebsites.net/api/v1/class?start_date={date_formated}&type=REGISTERED'
+url_get_class_details = f"https://back-spc.azurewebsites.net/api/v1/class/{class_id}/session"
 
 def log_in(user):
     url = url_get_token
@@ -32,11 +34,11 @@ def get_classes(token, url):
     return response_class
 
 def submitted(user, type):
+    print(type)
     my_token = log_in(user)
     if type=='all':
         get_my_classes = get_classes(my_token, url_get_class)
     else:
-        print("registered")
         get_my_classes = get_classes(my_token, url_get_registered_class)
     return get_my_classes
 
@@ -67,11 +69,12 @@ try:
         hide_index=True,
         )  
 except:
-    st.write("No hay clases para registrar")
+    st.write("No classes to show")
 
 try:
     type = 'registered'
     a = submitted(user, type)
+    df = pd.DataFrame(a)
     my_df = df[["id", "start_date", "location_name", "teacher_name",]]
     st.write(f"Clases de frances registradas a {date_beauty}")
     st.data_editor(
@@ -86,4 +89,4 @@ try:
         hide_index=True,
         )  
 except:
-    st.write("No hay clases programadas para mostrar")
+    st.write("No programed classes to show")
